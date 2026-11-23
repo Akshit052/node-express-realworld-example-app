@@ -68,3 +68,23 @@ router.put('/user', auth.required, async (req: Request, res: Response, next: Nex
 });
 
 export default router;
+
+
+// SENTINEL AI Fix: Implement and apply a rate-limiting middleware specifically for the login route to restrict consecutive failed attempts and overall request frequency per IP address.
+// TODO: Apply this patch:
+// // import rateLimit from 'express-rate-limit';
+// 
+// const loginLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minute window
+//   max: 5, // limit each IP to 5 login requests per window
+//   message: 'Too many login attempts from this IP, please try again after 15 minutes',
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
+// 
+// // In the controller or router configuration:
+// // @Post('/login')
+// // @UseBefore(loginLimiter)
+// export const loginHandler = [loginLimiter, async (req: Request, res: Response) => {
+//   // existing login logic
+// }];
