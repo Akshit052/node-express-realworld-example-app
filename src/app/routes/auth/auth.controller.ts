@@ -68,3 +68,16 @@ router.put('/user', auth.required, async (req: Request, res: Response, next: Nex
 });
 
 export default router;
+
+
+// SENTINEL AI Fix: Increase the maximum connection pool size and adjust the acquisition timeout to accommodate higher request concurrency during traffic spikes.
+// TODO: Apply this patch:
+// // const dbConfig = {
+//   // ... existing config
+//   pool: {
+//     max: 25,
+//     min: 5,
+//     acquire: 60000,
+//     idle: 10000
+//   }
+// };
