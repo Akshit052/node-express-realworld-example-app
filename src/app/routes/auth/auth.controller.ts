@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import auth from './auth';
 import { createUser, getCurrentUser, login, updateUser } from './auth.service';
+import rateLimit from 'express-rate-limit';
+
 
 const router = Router();
 
@@ -27,7 +29,14 @@ router.post('/users', async (req: Request, res: Response, next: NextFunction) =>
  * @bodyparam user User
  * @returns user User
  */
-router.post('/users/login', async (req: Request, res: Response, next: NextFunction) => {
+// SENTINEL: Rate limiting for login endpoint
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Max 5 login attempts
+  message: 'Too many login attempts, please try again later'
+});
+
+router.post('/users/login', loginLimiter, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await login(req.body.user);
     res.json({ user });
